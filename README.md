@@ -9,7 +9,19 @@
 
 ## to-do features
 
--   [ ] blah blah blah (means I DONT KNOW)
+-   [ ] HTTP Client Wrapper 구현 (EASY USING)
+-   [ ] TCP Client Wrapper 구현 (EASY USING)
+
+### todo just reply
+
+-   [ ] 날씨 정보 제공
+-   [ ] 학습 구현
+
+### todo mini games
+
+-   [ ] 미니게임 매니저 구현
+-   [ ] 1:1 채팅 시스템 구현
+-   [ ] 뱅 구현 (FINALLY)
 
 # how-to-build-and-run?
 
