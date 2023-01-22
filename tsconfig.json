@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"module": "CommonJS",
+		"lib": ["ES2015"],
+		"skipLibCheck": true,
+		"baseUrl": "./src/modules/",
+		"outDir": "./dist"
+	}
+}

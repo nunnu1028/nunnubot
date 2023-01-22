@@ -1,0 +1,10 @@
+{
+	"scripts": {
+		"build": "tsc",
+		"afterbuild": "node ./after_build.js",
+		"push": "npm run build && npm run afterbuild"
+	},
+	"devDependencies": {
+		"typescript": "^4.9.3"
+	}
+}
