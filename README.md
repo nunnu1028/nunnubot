@@ -1,2 +1,3 @@
-# discord.kb
-Discord bot implementation library for messenger bot
+# Nunnu bot
+
+this is a kakaotalk bot working via Messenger Bot R
