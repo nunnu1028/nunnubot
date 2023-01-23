@@ -9,7 +9,7 @@
 
 ## to-do features
 
--   [ ] HTTP Client Wrapper 구현 (EASY USING)
+-   [x] HTTP Client Wrapper 구현 (EASY USING)
 -   [ ] TCP Client Wrapper 구현 (EASY USING)
 
 ### todo just reply
