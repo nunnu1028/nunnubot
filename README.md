@@ -34,3 +34,9 @@
 # license
 
 이 봇은 라이센스 "GPL-v3" 으로 제공됩니다. 정확한 사항은 LICENSE 파일을 읽어보세요.
+
+# 레퍼런스 & used module
+
+-   @thoratica - https://cafe.naver.com/nameyee/38950
+-   @Darktornado - https://cafe.naver.com/nameyee/38950
+-   @naijun0403 (kakaolink module) - https://github.com/naijun0403/kakaolink

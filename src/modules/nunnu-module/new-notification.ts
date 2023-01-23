@@ -2,7 +2,7 @@
 
 export function notificationListener(sbn: android.service.notification.StatusBarNotification, sm: any) {
 	var packageName = sbn.getPackageName();
-	if (!packageName.startsWith("com.kakao.tal")) return;
+	if (!packageName.startsWith("com.kakao.talb")) return;
 
 	var actions = sbn.getNotification().actions;
 	if (actions == null) return;

@@ -1,7 +1,11 @@
-import { DatabaseManager, notificationListener, WebClient } from "nunnu-module";
+import { DatabaseManager, notificationListener } from "nunnu-module";
+import { KakaoApiService } from "naijun0403";
 
 // Production
-function onMessage(room: string, message: string, sender: string, isGroupChat: boolean, replier: Replier, imageDB: ImageDB, packageName: string, chatId: string): void {}
+function onMessage(room: string, message: string, sender: string, isGroupChat: boolean, replier: Replier, imageDB: ImageDB, packageName: string, chatId?: string): void {
+	if (message === "!test") {
+	}
+}
 
 // DebugRoom
 function response(room: string, message: string, sender: string, isGroupChat: boolean, replier: Replier, imageDB: ImageDB, packageName: string): void {
@@ -25,3 +29,4 @@ function response(room: string, message: string, sender: string, isGroupChat: bo
 }
 
 var onNotificationPosted = notificationListener;
+KakaoApiService;

@@ -14,7 +14,7 @@ declare interface Message {
 }
 
 declare interface Replier {
-	reply(msg: string): void;
+	reply(msg: string | number | Object): void;
 }
 
 declare namespace FileStream {
