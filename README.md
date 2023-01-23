@@ -11,7 +11,7 @@
 
 -   [x] HTTP Client Wrapper 구현 (EASY USING)
 -   [ ] TCP Client Wrapper 구현 (EASY USING) - 보류: 쓸데가 없음
--   [ ] 봇 매니저 구현 (커맨드 execution)
+-   [ ] 봇 매니저 구현 (커맨드 execution, database, etc..)
 
 ### todo just reply
 
