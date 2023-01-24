@@ -38,5 +38,5 @@
 # 레퍼런스 & used module
 
 -   @thoratica - https://cafe.naver.com/nameyee/38950
--   @Darktornado - https://cafe.naver.com/nameyee/38950
+-   @Darktornado - https://cafe.naver.com/nameyee/39192
 -   @naijun0403 (kakaolink module) - https://github.com/naijun0403/kakaolink

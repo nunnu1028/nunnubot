@@ -16,29 +16,13 @@ export class DatabaseManager<T = string> {
 	}
 
 	public load(): T | null {
-		const file = new java.io.File(this._filePath);
-		if (!file.exists()) return null;
-
-		const fis = new java.io.FileInputStream(file);
-		const ois = new java.io.ObjectInputStream(fis);
-		const data = ois.readObject();
-		ois.close();
-		fis.close();
-
+		const data = FileStream.read(this._filePath);
 		this._lastData = this._serializer(data);
 		return this._lastData;
 	}
 
 	public save(data: T): void {
-		const file = new java.io.File(this._filePath);
-		if (!file.exists()) file.createNewFile();
-
-		const fos = new java.io.FileOutputStream(file);
-		const oos = new java.io.ObjectOutputStream(fos);
-		oos.writeObject(this._deserializer(data));
-		oos.close();
-		fos.close();
-
+		FileStream.write(this._filePath, this._deserializer(data));
 		this._lastData = data;
 		return;
 	}
