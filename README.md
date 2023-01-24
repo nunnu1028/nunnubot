@@ -7,6 +7,18 @@
 
 이 봇은 주로 간단한 기능들로 구현될 에정입니다.
 
+## non bot feature (at coding)
+
+-   [x] 타입스크립트
+-   [x] 모듈 설치
+
+### 모듈 설치?
+
+-   npm run push시 폰에는 nunnu-module만 올라갑니다.
+-   레포지토리에도 nunnu-module만 올라갑니다.
+-   코딩시에는 모든 모듈을 다운받아서 합니다. (for 자동완성과 tsc)
+-   require 함수를 재정의하여, 실시간 다운로드 후 require됩니다. (참고: [after_build.js](./after_build.js) [moduleInfo.json](./src/modules/moduleInfo.json) [module-checker.ts](./src/modules/nunnu-module/module-checker.ts))
+
 ## to-do features
 
 -   [x] HTTP Client Wrapper 구현 (EASY USING)
