@@ -1,8 +1,7 @@
 {
 	"scripts": {
 		"build": "tsc",
-		"afterbuild": "node ./after_build.js",
-		"push": "npm run build && npm run afterbuild"
+		"push": "npm run build && node ./after_build.js"
 	},
 	"devDependencies": {
 		"typescript": "^4.9.3"
