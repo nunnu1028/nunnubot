@@ -12,13 +12,6 @@
 -   [x] 타입스크립트
 -   [x] 모듈 설치
 
-### 모듈 설치?
-
--   npm run push시 폰에는 nunnu-module만 올라갑니다.
--   레포지토리에도 nunnu-module만 올라갑니다.
--   코딩시에는 모든 모듈을 다운받아서 합니다. (for 자동완성과 tsc)
--   require 함수를 재정의하여, 실시간 다운로드 후 require됩니다. (참고: [after_build.js](./after_build.js) [moduleInfo.json](./src/modules/moduleInfo.json) [module-checker.ts](./src/modules/nunnu-module/module-checker.ts))
-
 ## to-do features
 
 -   [x] HTTP Client Wrapper 구현 (EASY USING)
@@ -47,8 +40,12 @@
 
 이 봇은 라이센스 "GPL-v3" 으로 제공됩니다. 정확한 사항은 LICENSE 파일을 읽어보세요.
 
-# 레퍼런스 & used module
+# 레퍼런스
 
 -   @thoratica - https://cafe.naver.com/nameyee/38950
 -   @Darktornado - https://cafe.naver.com/nameyee/39192
+-   @nolbo (kakaobot docs) - https://kbotdocs.github.io/kbotdocs/
+
+# Dependency
+
 -   @naijun0403 (kakaolink module) - https://github.com/naijun0403/kakaolink
