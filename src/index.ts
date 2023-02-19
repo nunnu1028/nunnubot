@@ -1,9 +1,5 @@
 import { PingPongCommand } from "commands";
-<<<<<<< HEAD
 import { CommandManager, notificationListener } from "core";
-=======
-import { CommandManager, notificationListener } from "nunnu-module";
->>>>>>> d7a1ed1f858e6ed09510b2521bf3599f98f639c6
 
 const commandManager = new CommandManager();
 commandManager.addCommand(new PingPongCommand());

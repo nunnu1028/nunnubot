@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { CheckLevelRes, Command, MessageInfo } from "../core";
-=======
-import { CheckLevelRes, Command, MessageInfo } from "nunnu-module";
->>>>>>> d7a1ed1f858e6ed09510b2521bf3599f98f639c6
 
 export class PingPongCommand implements Command {
 	public get name(): string {
