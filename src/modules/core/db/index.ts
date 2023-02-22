@@ -15,7 +15,20 @@ export class DatabaseManager<T = string> {
 		return this._lastData;
 	}
 
-	public load(): T | null {
+	private _createFile(): void {
+		const dir = new java.io.File(this._filePath).getParentFile();
+		if (!dir.exists()) dir.mkdirs();
+		const file = new java.io.File(this._filePath);
+		if (!file.exists()) file.createNewFile();
+	}
+
+	public load(defaultData: T): T | null {
+		if (!new java.io.File(this._filePath).exists()) {
+			this._createFile();
+			this.save(defaultData);
+			return defaultData;
+		}
+
 		const data = FileStream.read(this._filePath);
 		this._lastData = this._serializer(data);
 		return this._lastData;
