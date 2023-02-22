@@ -1,5 +1,6 @@
 export interface FunctionRes extends Record<any, any> {
 	readonly success: boolean;
+	readonly status: number;
 }
 
 export interface FunctionFailed extends FunctionRes {
