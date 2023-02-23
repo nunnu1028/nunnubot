@@ -1,5 +1,5 @@
 import { CheckLevelRes, Command, CommandManager, CommandParser, MessageInfo } from "core";
-import { UserDatabase } from "game/database";
+import { UserDatabase } from "game";
 
 export class RegisterUserCommand implements Command {
 	public get name(): string {

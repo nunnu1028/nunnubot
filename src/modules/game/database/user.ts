@@ -1,5 +1,5 @@
 import { DatabaseManager } from "core";
-import { GameDatabaseStatic, StaticImplements } from ".";
+import { GameDatabaseStatic, StaticImplements } from "game";
 
 export interface User {
 	id: string;

@@ -1,5 +1,5 @@
 import { MessageInfo, CommandManager } from "core";
-import { BangGame, BangItem, BangPageType, BangPlayer } from "../bang-game";
+import { BangGame, BangItem, BangPageType, BangPlayer } from "game";
 
 export class BangItem_Bang implements BangItem {
 	public name = "뱅";

@@ -1,7 +1,5 @@
 import { CheckLevelRes, CommandManager, CommandParser, MessageInfo } from "core";
-import { UserDatabase } from "game/database";
-import { Game, GameManager } from "game/game-manager";
-import { GameCommand } from ".";
+import { Game, GameManager, UserDatabase, GameCommand } from "game";
 
 export class GameChatCommand implements GameCommand {
 	public get name(): string {

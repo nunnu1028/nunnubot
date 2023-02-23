@@ -6,7 +6,7 @@ export * from "./create-game";
 export * from "./join-game";
 
 import { MessageInfo, CheckLevelRes, CommandManager, Command } from "core";
-import { Player, Game, GameManager } from "game/game-manager";
+import { Player, Game, GameManager } from "game";
 
 export interface GameCommand<T extends Player = Player> extends Command {
 	name: string;

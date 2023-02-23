@@ -27,4 +27,4 @@ function response(room: string, message: string, sender: string, isGroupChat: bo
 	if (packageName !== "com.xfl.msgbot") return;
 }
 
-var onNotificationPosted = notificationListener;
+const onNotificationPosted = notificationListener;
