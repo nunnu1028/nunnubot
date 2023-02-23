@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 export class WebClient {
 	constructor(private readonly _host: string) {}
 
 	public request(
 		method: string,
 		path: string,
-		headers: Record<any, any>,
+		headers: Record<string | number, unknown>,
 		data?: string
 	): {
 		statusCode: number;
-		headers: Record<any, any>;
+		headers: Record<string | number, unknown>;
 		body: string;
 	} {
 		// No definition for org.jsoup.Jsoup

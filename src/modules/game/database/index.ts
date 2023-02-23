@@ -1,8 +1,8 @@
 import { DatabaseManager } from "core";
 
-export type StaticImplements<I extends new (...args: any[]) => any> = InstanceType<I>;
+export type StaticImplements<I extends new (...args: unknown[]) => unknown> = InstanceType<I>;
 
-export interface GameDatabaseInstance<T = any> {
+export interface GameDatabaseInstance<T = unknown> {
 	dataBase: DatabaseManager<T>;
 	dataBasePath: string;
 	load(): void;

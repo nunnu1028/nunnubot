@@ -1,5 +1,5 @@
-declare const importPackage: (...pkgs: (android | androidx | java | javax)[]) => any;
-declare const importClass: (...pkgs: (android | androidx | java | javax)[]) => any;
+declare const importPackage: (...pkgs: (android | androidx | java | javax)[]) => unknown;
+declare const importClass: (...pkgs: (android | androidx | java | javax)[]) => unknown;
 
 declare interface Message {
 	room: string;
@@ -14,7 +14,7 @@ declare interface Message {
 }
 
 declare interface Replier {
-	reply(msg: string | number | Object): void;
+	reply(msg: string | number | object): void;
 }
 
 declare namespace FileStream {
@@ -57,6 +57,7 @@ declare namespace Api {
 	export function makeNoti(title: string, content: string, id: number): string[];
 	export function papagoTranslate(sourceLanguage: string, targetLanguage: string, content: string, errorToString: boolean = false): string;
 	export function gc(): void;
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	export function UIThread(func: Function, onComplete: Function): void;
 	export function getActiveThreadsCount(scriptName: string): number;
 	export function interruptThreads(scriptName: string): void;

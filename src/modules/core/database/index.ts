@@ -3,10 +3,10 @@ export class DatabaseManager<T = string> {
 
 	constructor(
 		private readonly _filePath: string,
-		private readonly _serializer: (data: any) => T = (data: any) => {
+		private readonly _serializer: (data: unknown) => T = (data: unknown) => {
 			return data as T;
 		},
-		private readonly _deserializer: (data: T) => any = (data: T) => {
+		private readonly _deserializer: (data: T) => unknown = (data: T) => {
 			return data;
 		}
 	) {}
@@ -35,7 +35,7 @@ export class DatabaseManager<T = string> {
 	}
 
 	public save(data: T): void {
-		FileStream.write(this._filePath, this._deserializer(data));
+		FileStream.write(this._filePath, this._deserializer(data) as string);
 		this._lastData = data;
 		return;
 	}
