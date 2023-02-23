@@ -51,7 +51,7 @@ export class CommandManager {
 		const command = this._commandMap.get(info.message.split(" ")[0].slice(this._prefix.length));
 		if (command && !command.name.startsWith("_")) {
 			const level = command.check_level(info);
-			if (!level.permission) return info.replier.reply(level.text ?? "권한이 없습니다.");
+			if (!level.permission) return info.replier.reply(level.text ?? "권한이 없습니다. 관리자에게 문의하세요.");
 			command.execute(info, this);
 		}
 
