@@ -19,7 +19,7 @@ export interface Command {
 	description: string;
 	usage: string;
 	check_level: (info: MessageInfo) => CheckLevelRes;
-	execute: (info: MessageInfo, manager: CommandManager) => void;
+	execute: (info: MessageInfo, manager: CommandManager, ...args: any) => void;
 }
 
 export class CommandManager {
@@ -49,10 +49,26 @@ export class CommandManager {
 	public execute(info: MessageInfo): void {
 		if (!info.message.startsWith(this._prefix)) return;
 		const command = this._commandMap.get(info.message.split(" ")[0].slice(this._prefix.length));
-		if (command) {
+		if (command && !command.name.startsWith("_")) {
 			const level = command.check_level(info);
 			if (!level.permission) return info.replier.reply(level.text ?? "권한이 없습니다.");
 			command.execute(info, this);
 		}
+
+		const globalCommands = this.commands.filter((command) => command.name.startsWith("*"));
+		for (const command of globalCommands) {
+			const level = command.check_level(info);
+			if (!level.permission) continue;
+			command.execute(info, this);
+		}
+	}
+}
+
+export namespace CommandParser {
+	export function parseCommand(info: MessageInfo): { command: string; args: string[] } {
+		const message = info.message;
+		const command = message.split(" ")[0];
+		const args = message.split(" ").slice(1);
+		return { command, args };
 	}
 }

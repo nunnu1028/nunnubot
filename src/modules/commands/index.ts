@@ -1,4 +1,4 @@
-import { CheckLevelRes, Command, MessageInfo } from "../core";
+import { CheckLevelRes, Command, MessageInfo } from "core";
 
 export class PingPongCommand implements Command {
 	public get name(): string {
