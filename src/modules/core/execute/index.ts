@@ -24,6 +24,7 @@ export interface Command {
 
 export class CommandManager {
 	private _commandMap: Map<string, Command> = new Map();
+	private _askMap: Map<string, java.util.concurrent.CompletableFuture<string>> = new Map();
 	constructor(private readonly _prefix: string = "") {}
 
 	public addCommand(command: Command): void {
@@ -46,7 +47,22 @@ export class CommandManager {
 		return this._commandMap;
 	}
 
+	public ask(info: MessageInfo, question: string): java.util.concurrent.CompletableFuture<string> {
+		info.replier.reply(question);
+		const future = new java.util.concurrent.CompletableFuture<string>();
+		this._askMap.set(info.chatId, future);
+
+		return future;
+	}
+
 	public execute(info: MessageInfo): void {
+		if (this._askMap.has(info.chatId)) {
+			const future = this._askMap.get(info.chatId);
+			if (future) future.complete(info.message);
+			this._askMap.delete(info.chatId);
+			return;
+		}
+
 		if (!info.message.startsWith(this._prefix)) return;
 		const command = this._commandMap.get(info.message.split(" ")[0].slice(this._prefix.length));
 		if (command && !command.name.startsWith("_")) {

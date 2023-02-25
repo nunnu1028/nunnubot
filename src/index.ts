@@ -19,7 +19,9 @@ function onMessage(room: string, message: string, sender: string, isGroupChat: b
 	commandManager.execute({ room, message, sender, isGroupChat, replier, imageDB, packageName, chatId });
 
 	if (message === "!ping") {
-		replier.reply("pong, " + chatId);
+		const ask = commandManager.ask({ room, message, sender, isGroupChat, replier, imageDB, packageName, chatId }, "pong?");
+		const res = ask.get();
+		replier.reply(res);
 	}
 }
 
