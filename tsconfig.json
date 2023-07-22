@@ -7,7 +7,12 @@
 		"skipLibCheck": true,
 		"baseUrl": "./src/modules/",
 		"outDir": "./dist",
-		"allowJs": true
+		"allowJs": true,
+		"esModuleInterop": true
 	},
-	"include": ["./src/**/*", "./android.d.ts", "./api.d.ts"]
+	"include": ["./src/**/*", "./android.d.ts", "./api.d.ts"],
+	"ts-node": {
+		"files": true,
+		"require": ["tsconfig-paths/register"]
+	}
 }

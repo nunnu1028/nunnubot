@@ -24,7 +24,8 @@ export interface Command {
 
 export class CommandManager {
 	private _commandMap: Map<string, Command> = new Map();
-	private _askMap: Map<string, java.util.concurrent.CompletableFuture<string>> = new Map();
+	private readonly _askMap: Map<string, [resolve: (value: string) => void, reject: (reason?: never) => void]> = new Map();
+
 	constructor(private readonly _prefix: string = "") {}
 
 	public addCommand(command: Command): void {
@@ -47,21 +48,43 @@ export class CommandManager {
 		return this._commandMap;
 	}
 
-	public ask(info: MessageInfo, question: string): java.util.concurrent.CompletableFuture<string> {
+	public ask(
+		info: MessageInfo,
+		question: string
+	): {
+		get(): Promise<string>;
+	} {
 		info.replier.reply(question);
-		const future = new java.util.concurrent.CompletableFuture<string>();
-		this._askMap.set(info.chatId, future);
 
-		return future;
+		const pr = new Promise<string>((resolve, reject) => {
+			this._askMap.set(info.chatId, [
+				(res) => {
+					resolve(res);
+				},
+				reject
+			]);
+		});
+
+		return {
+			get: async (): Promise<string> => {
+				return pr;
+			}
+		};
 	}
 
-	public execute(info: MessageInfo): void {
+	public checkAsk(info: MessageInfo): boolean {
 		if (this._askMap.has(info.chatId)) {
-			const future = this._askMap.get(info.chatId);
-			if (future) future.complete(info.message);
+			this._askMap.get(info.chatId)[0](info.message);
 			this._askMap.delete(info.chatId);
-			return;
+
+			return true;
 		}
+
+		return false;
+	}
+
+	public execute(info: MessageInfo, checkingFunc: (info: MessageInfo) => boolean = this.checkAsk.bind(this)): void {
+		if (checkingFunc(info)) return;
 
 		if (!info.message.startsWith(this._prefix)) return;
 		const command = this._commandMap.get(info.message.split(" ")[0].slice(this._prefix.length));

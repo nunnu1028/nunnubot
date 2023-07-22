@@ -28,12 +28,13 @@ export function notificationListener(sbn: android.service.notification.StatusBar
 		const icon = bundle.getParcelableArray("android.messages")[0].get("sender_person").getIcon().getBitmap();
 		let image = bundle.getBundle("android.wearable.EXTENSIONS");
 		if (image != null) image = image.getParcelable("background") as android.os.Bundle;
+		const hashedUserId = sbn.getUser().hashCode();
 
 		const imageDB = new com.xfl.msgbot.script.api.legacy.ImageDB(icon, image);
 		com.xfl.msgbot.application.service.NotificationListener.Companion.setSession(packageName, room, action);
 
 		if (this.hasOwnProperty("onMessage")) {
-			onMessage(room, msg, sender, isGroupChat, replier, imageDB, packageName, chatId);
+			onMessage(room, msg, sender, isGroupChat, replier, imageDB, packageName, chatId, hashedUserId);
 		}
 	}
 }

@@ -1,4 +1,15 @@
-export class DatabaseManager<T = string> {
+export interface CDatabaseManager<T> {
+	new (_filePath: string, _serializer: (data: unknown) => T, _deserializer: (data: T) => string): IDatabaseManager;
+}
+
+export interface IDatabaseManager<T = string> {
+	readonly lastData: T | null;
+	load(defaultData: T): T | null;
+	save(data: T): void;
+}
+
+export class DatabaseManager<T = string> implements IDatabaseManager<T> {
+	public static classConstructor: CDatabaseManager<never> = DatabaseManager;
 	private _lastData: T | null = null;
 
 	constructor(
@@ -6,8 +17,8 @@ export class DatabaseManager<T = string> {
 		private readonly _serializer: (data: unknown) => T = (data: unknown) => {
 			return data as T;
 		},
-		private readonly _deserializer: (data: T) => unknown = (data: T) => {
-			return data;
+		private readonly _deserializer: (data: T) => string = (data: T) => {
+			return data as string;
 		}
 	) {}
 
@@ -35,7 +46,7 @@ export class DatabaseManager<T = string> {
 	}
 
 	public save(data: T): void {
-		FileStream.write(this._filePath, this._deserializer(data) as string);
+		FileStream.write(this._filePath, this._deserializer(data));
 		this._lastData = data;
 		return;
 	}

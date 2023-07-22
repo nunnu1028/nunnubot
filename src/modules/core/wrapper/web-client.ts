@@ -1,17 +1,36 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-export class WebClient {
-	constructor(private readonly _host: string) {}
+export interface CWebClient {
+	new (_host: string): IWebClient;
+}
 
-	public request(
+export interface IWebClient {
+	request(
 		method: string,
 		path: string,
 		headers: Record<string | number, unknown>,
 		data?: string
-	): {
+	): Promise<{
 		statusCode: number;
 		headers: Record<string | number, unknown>;
 		body: string;
-	} {
+	}>;
+}
+
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+export class WebClient implements IWebClient {
+	public static classConstructor: CWebClient = WebClient;
+
+	constructor(private readonly _host: string) {}
+
+	public async request(
+		method: string,
+		path: string,
+		headers: Record<string | number, unknown>,
+		data?: string
+	): Promise<{
+		statusCode: number;
+		headers: Record<string | number, unknown>;
+		body: string;
+	}> {
 		// No definition for org.jsoup.Jsoup
 
 		/* @ts-ignore */
