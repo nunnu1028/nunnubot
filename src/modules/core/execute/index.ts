@@ -6,7 +6,8 @@ export interface MessageInfo {
 	replier: Replier;
 	imageDB: ImageDB;
 	packageName: string;
-	chatId?: string;
+	chatId: string;
+	hashedUserId: string;
 }
 
 export interface CheckLevelRes {
@@ -57,7 +58,7 @@ export class CommandManager {
 		info.replier.reply(question);
 
 		const pr = new Promise<string>((resolve, reject) => {
-			this._askMap.set(info.chatId, [
+			this._askMap.set(info.hashedUserId, [
 				(res) => {
 					resolve(res);
 				},
@@ -73,9 +74,9 @@ export class CommandManager {
 	}
 
 	public checkAsk(info: MessageInfo): boolean {
-		if (this._askMap.has(info.chatId)) {
-			this._askMap.get(info.chatId)[0](info.message);
-			this._askMap.delete(info.chatId);
+		if (this._askMap.has(info.hashedUserId)) {
+			this._askMap.get(info.hashedUserId)[0](info.message);
+			this._askMap.delete(info.hashedUserId);
 
 			return true;
 		}

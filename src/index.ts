@@ -1,12 +1,11 @@
 import { PingPongCommand } from "commands";
 import { CommandManager, notificationListener } from "core";
 import { GameChatCommand, CreateGameCommand, GameCommandLayer, GameManager, JoinGameCommand, RegisterUserCommand } from "game";
-import { startEmulatorMode, supportEmulatorMode } from "emulator";
 
-const emulatorMode = process && process.argv.includes("--emulator");
+const emulatorMode = typeof process !== "undefined" && process.argv.includes("--emulator");
 
 if (emulatorMode) {
-	supportEmulatorMode();
+	require("emulator").supportEmulatorMode();
 }
 
 const commandManager = new CommandManager();
@@ -29,13 +28,13 @@ async function onMessage(
 	replier: Replier,
 	imageDB: ImageDB,
 	packageName: string,
-	chatId?: string,
-	hashedUserId?: string
+	chatId: string,
+	hashedUserId: string
 ): Promise<void> {
-	commandManager.execute({ room, message, sender, isGroupChat, replier, imageDB, packageName, chatId });
+	commandManager.execute({ room, message, sender, isGroupChat, replier, imageDB, packageName, chatId, hashedUserId });
 
 	if (message === "!ping") {
-		const ask = commandManager.ask({ room, message, sender, isGroupChat, replier, imageDB, packageName, chatId }, "pong?");
+		const ask = commandManager.ask({ room, message, sender, isGroupChat, replier, imageDB, packageName, chatId, hashedUserId }, "pong? " + chatId + ": " + hashedUserId);
 		const res = await ask.get();
 		replier.reply(res);
 	}
@@ -46,7 +45,8 @@ function response(room: string, message: string, sender: string, isGroupChat: bo
 }
 
 if (emulatorMode) {
-	startEmulatorMode(onMessage.bind(this));
-} else {
-	const onNotificationPosted = notificationListener;
+	require("emulator").startEmulatorMode(onMessage.bind(this));
 }
+
+const onNotificationPosted = notificationListener;
+eval(`var Promise = require("dependency/promise").Promise;`); // for Promise on rhino

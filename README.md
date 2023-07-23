@@ -11,13 +11,14 @@
 
 -   [ ] 에뮬레이션 서버 구현 -> 카톡 없이도 봇 기능 구현 가능
 -   [x] 타입스크립트
--   [x] 모듈 설치
+-   [x] 모듈 설치 -> 그런거 없어짐
 
 ## to-do features
 
+-   [x] 비동기 지원 -> Promise Polyfill + tsc \_\_awaiter
 -   [x] HTTP Client Wrapper 구현 (EASY USING)
--   [ ] TCP Client Wrapper 구현 (EASY USING) - 보류: 쓸데가 없음
--   [ ] 봇 매니저 구현 (커맨드 execution, database, etc..)
+-   [ ] TCP Client Wrapper 구현 (EASY USING) -> 보류: 쓸데가 없음
+-   [x] 봇 매니저 구현 (커맨드 execution, database, etc..)
 
 ### todo just reply
 
@@ -44,9 +45,10 @@
 # 레퍼런스
 
 -   @thoratica - https://cafe.naver.com/nameyee/38950
+-   @thoratica - https://cafe.naver.com/nameyee/38950
 -   @Darktornado - https://cafe.naver.com/nameyee/39192
 -   @nolbo (kakaobot docs) - https://kbotdocs.github.io/kbotdocs/
 
 # Dependency
 
--   @naijun0403 (kakaolink module) - https://github.com/naijun0403/kakaolink
+-   @taylorhakes (promise-polyfill) - https://github.com/taylorhakes/promise-polyfill

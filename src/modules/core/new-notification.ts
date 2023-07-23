@@ -5,6 +5,7 @@
 export function notificationListener(sbn: android.service.notification.StatusBarNotification, sm: unknown) {
 	const packageName = sbn.getPackageName();
 	if (!packageName.startsWith("com.kakao.talb")) return;
+	//	if (packageName === "com.kakao.talk" && ![95].includes(sbn.getUserId())) return; // for 듀얼메신저
 
 	const actions = sbn.getNotification().actions;
 	if (actions == null) return;
@@ -28,7 +29,7 @@ export function notificationListener(sbn: android.service.notification.StatusBar
 		const icon = bundle.getParcelableArray("android.messages")[0].get("sender_person").getIcon().getBitmap();
 		let image = bundle.getBundle("android.wearable.EXTENSIONS");
 		if (image != null) image = image.getParcelable("background") as android.os.Bundle;
-		const hashedUserId = sbn.getUser().hashCode();
+		const hashedUserId = bundle.getParcelableArray("android.messages")[0].get("sender_person").getKey();
 
 		const imageDB = new com.xfl.msgbot.script.api.legacy.ImageDB(icon, image);
 		com.xfl.msgbot.application.service.NotificationListener.Companion.setSession(packageName, room, action);
