@@ -1,6 +1,5 @@
 import { PingPongCommand } from "commands";
 import { CommandManager, notificationListener } from "core";
-import { GameChatCommand, CreateGameCommand, GameCommandLayer, GameManager, JoinGameCommand, RegisterUserCommand } from "game";
 
 const emulatorMode = typeof process !== "undefined" && process.argv.includes("--emulator");
 
@@ -10,15 +9,6 @@ if (emulatorMode) {
 
 const commandManager = new CommandManager();
 commandManager.addCommand(new PingPongCommand());
-
-commandManager.addCommand(new RegisterUserCommand());
-commandManager.addCommand(new CreateGameCommand());
-commandManager.addCommand(new JoinGameCommand());
-
-commandManager.addCommand(new GameCommandLayer());
-commandManager.addCommand(new GameChatCommand());
-
-const gameManager = GameManager.getInstance();
 
 async function onMessage(
 	room: string,

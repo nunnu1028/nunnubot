@@ -9,7 +9,7 @@ export interface IDatabaseManager<T = string> {
 }
 
 export class DatabaseManager<T = string> implements IDatabaseManager<T> {
-	public static classConstructor: CDatabaseManager<never> = DatabaseManager;
+	public static classConstructor: CDatabaseManager<any> = DatabaseManager;
 	private _lastData: T | null = null;
 
 	constructor(
