@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { Server, WebSocket } from "ws";
-import { PacketHandler, LoginPacketHandler, AddChannelPacketHandler, SendMessagePacketHandler } from "./handlers";
+import { PacketHandler, LoginPacketHandler, AddChannelPacketHandler, SendMessagePacketHandler, JoinChannelPacketHandler, LoadChannelsPacketHandler } from "./handlers";
 
 export * from "./handlers";
 
@@ -144,6 +144,8 @@ export class EmulationServer {
 		this._packetHandlerMap.set(LoginPacketHandler.METHOD, new LoginPacketHandler(this));
 		this._packetHandlerMap.set(AddChannelPacketHandler.METHOD, new AddChannelPacketHandler(this));
 		this._packetHandlerMap.set(SendMessagePacketHandler.METHOD, new SendMessagePacketHandler(this));
+		this._packetHandlerMap.set(JoinChannelPacketHandler.METHOD, new JoinChannelPacketHandler(this));
+		this._packetHandlerMap.set(LoadChannelsPacketHandler.METHOD, new LoadChannelsPacketHandler(this));
 	}
 
 	public findUser(id: string): EmulationUser | null {

@@ -49,12 +49,18 @@ export class SendMessagePacketHandler extends PacketHandler<PEmulationSendMsgQ> 
 			session.socket
 		);
 
-		const sessions = this.server.sessions.filter((e) => channelInfo.userIds.includes(e.user.id) && e.user.id !== session.user.id);
+		const sessions = this.server.sessions.filter((e) => e.user && channelInfo.userIds.includes(e.user.id) && e.user.id !== session.user.id);
 		sessions.forEach((e) => {
 			this.server.sendRes(
 				"MESSAGE",
 				{
-					status: "success"
+					status: "success",
+					message: packet.data.message,
+					userId: session.user.id,
+					userName: session.user.userName,
+					profileImage: session.user.profileImage,
+					channelName: channelInfo.name,
+					channelId: channelInfo.id
 				},
 				-1,
 				e.socket
