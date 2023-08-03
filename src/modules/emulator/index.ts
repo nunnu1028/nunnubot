@@ -6,6 +6,7 @@ import { EDatabaseManager } from "./edatabase";
 import { EmulationServer } from "./server";
 import WebSocket from "ws";
 import { createHash } from "crypto";
+import { exec } from "child_process";
 
 export function supportEmulatorMode(): void {
 	WebClient.classConstructor = EWebClient;
@@ -66,4 +67,8 @@ export function startEmulatorMode(
 			);
 		}
 	};
+
+	exec("start ./src/modules/emulator/client/web.html", {
+		cwd: process.cwd()
+	});
 }

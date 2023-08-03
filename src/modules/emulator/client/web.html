@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+
+	<script>
+		let sessionInfo = null;
+
+		const ws = new WebSocket("ws://localhost:12345");
+		let currentPacketId = 0;
+		const packetPool = new Map();
+
+		ws.onmessage = function (event) {
+			const data = JSON.parse(event.data);
+			if (packetPool.has(data.packetId)) {
+				const promise = packetPool.get(data.packetId);
+				promise.resolve(data);
+			}
+
+			if (data.method === "MESSAGE") {
+				const chat = document.querySelector(".chat");
+				const p = document.createElement("p");
+				p.innerText = data.data.userName + ": " + data.data.message;
+				p.style.color = "red";
+				chat.appendChild(p);
+			}
+		};
+
+		function sendPacket(method, packetId, data) {
+			ws.send(
+				JSON.stringify({
+					method: method,
+					packetId: packetId,
+					data: data
+				})
+			);
+		}
+
+		async function request(method, data) {
+			const packetId = currentPacketId++;
+			const promise = new Promise((resolve, reject) => {
+				packetPool.set(packetId, {
+					resolve,
+					reject
+				});
+			});
+
+			sendPacket(method, packetId, data);
+
+			return promise;
+		}
+
+		async function login() {
+			const id = document.getElementById("id").value;
+			const userName = document.getElementById("userName").value;
+
+			const res = await request("LOGIN", {
+				id,
+				userName
+			});
+
+			if (res.data.status === "success") {
+				sessionInfo = {
+					id: id,
+					userName: userName,
+					joinedChannelIds: res.data.joinedChannelIds,
+					profileImage: res.data.profileImage
+				};
+
+				document.querySelector(".login").hidden = true;
+				document.querySelector(".main").hidden = false;
+
+				loadChannels();
+			} else {
+				alert(res.data.status);
+			}
+		}
+
+		async function loadChannels() {
+			const res = await request("LOADCHANNELS", {
+				ids: sessionInfo.joinedChannelIds
+			});
+
+			if (res.data.status === "success") {
+				const channels = res.data.channels;
+				const channelId = channels[0].id;
+				const channelName = channels[0].name;
+				const users = channels[0].users;
+
+				document.getElementById("channelId").innerText = channelName;
+				document.getElementById("users").innerText = "USERS: " + users.join(", ");
+			} else {
+				alert(res.data.status);
+			}
+		}
+
+		async function sendMessage() {
+			const channelId = document.getElementById("channelId").innerText;
+			const message = document.getElementById("message").value;
+			const res = await request("SENDMESSAGE", {
+				channelId: channelId,
+				message: message
+			});
+
+			if (res.data.status === "success") {
+				document.getElementById("message").value = "";
+
+				const chat = document.querySelector(".chat");
+				const p = document.createElement("p");
+				p.innerText = sessionInfo.userName + ": " + message;
+				p.style.color = "blue";
+				chat.appendChild(p);
+			} else {
+				alert(res.data.status);
+			}
+		}
+	</script>
+
+	<body>
+		<div class="login">
+			<p>ID</p>
+			<input id="id" />
+			<p>Nickname (for first time login)</p>
+			<input id="userName" />
+			<button onclick="login()">Login</button>
+		</div>
+
+		<div class="main" hidden>
+			<form onsubmit="sendMessage(); return false;">
+				<input id="message" placeholder="chat" />
+				<button>Send</button>
+			</form>
+
+			<div class="channel">
+				<p id="channelId"></p>
+				<p id="users"></p>
+			</div>
+
+			<div class="chat"></div>
+		</div>
+	</body>
+</html>
