@@ -19,6 +19,7 @@ export interface Command {
 	name: string;
 	description: string;
 	usage: string;
+	alias?: string[];
 	check_level: (info: MessageInfo) => CheckLevelRes;
 	execute: (info: MessageInfo, manager: CommandManager, ...args: unknown[]) => void;
 }
@@ -31,14 +32,33 @@ export class CommandManager {
 
 	public addCommand(command: Command): void {
 		this._commandMap.set(command.name, command);
+
+		if (command.alias) {
+			for (const alias of command.alias) {
+				this._commandMap.set(alias, command);
+			}
+		}
 	}
 
 	public removeCommand(command: Command): void {
 		this._commandMap.delete(command.name);
+
+		if (command.alias) {
+			for (const alias of command.alias) {
+				this._commandMap.delete(alias);
+			}
+		}
 	}
 
 	public getCommand(name: string): Command | undefined {
-		return this._commandMap.get(name);
+		const command = this._commandMap.get(name);
+
+		if (!command) {
+			const aliasCommand = Array.from(this._commandMap.values()).find((command) => command.alias?.includes(name));
+			if (aliasCommand) return aliasCommand;
+		}
+
+		return command;
 	}
 
 	public get commands(): Command[] {

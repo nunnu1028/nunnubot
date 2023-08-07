@@ -1,5 +1,6 @@
 import { PingPongCommand } from "commands";
 import { CommandManager, notificationListener } from "core";
+import { FishCommand, FishMoveCommand, FishRegisterCommand } from "game";
 
 const emulatorMode = typeof process !== "undefined" && process.argv.includes("--emulator");
 
@@ -9,6 +10,10 @@ if (emulatorMode) {
 
 const commandManager = new CommandManager();
 commandManager.addCommand(new PingPongCommand());
+
+commandManager.addCommand(new FishCommand());
+commandManager.addCommand(new FishRegisterCommand());
+commandManager.addCommand(new FishMoveCommand());
 
 async function onMessage(
 	room: string,

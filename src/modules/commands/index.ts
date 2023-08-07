@@ -10,7 +10,7 @@ export class PingPongCommand implements Command {
 	}
 
 	public get usage(): string {
-		return "!ping";
+		return "ping";
 	}
 
 	public check_level(info: MessageInfo): CheckLevelRes {
