@@ -7,7 +7,7 @@ export class FishMoveCommand implements Command {
 	}
 
 	public get alias(): string[] {
-		return ["fm"];
+		return ["fm", "ㅇㄷ"];
 	}
 
 	public get description(): string {

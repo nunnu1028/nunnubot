@@ -1,8 +1,8 @@
 export enum FishLevel {
-	NORMAL = 0,
-	RARE = 1,
-	EPIC = 2,
-	LEGENDARY = 3
+	NORMAL = "NORMAL",
+	RARE = "RARE",
+	EPIC = "EPIC",
+	LEGENDARY = "LEGENDARY"
 }
 
 export interface Fish {
@@ -66,15 +66,34 @@ export interface FishingUser {
 
 	fishes: Fish[];
 	rodIds: string[];
-	tagIds: FishTag[];
+	tagIds: string[];
+	baitIds: string[];
 
 	selectedRodId: string;
 	selectedTagId: string;
+
+	money: number;
 
 	level: FishingUserLevel;
 	currentLevel: number;
 	currentExp: number;
 	currentRoomId: string;
+	currentBaitId: string;
+}
+
+export interface Bait {
+	id: string;
+	name: string;
+	price: number;
+
+	percentage: {
+		normal: number;
+		rare: number;
+		epic: number;
+		legendary: number;
+	};
+
+	speedEffect: number;
 }
 
 export interface FishingDB {
@@ -82,6 +101,7 @@ export interface FishingDB {
 	fishes: FishData[];
 	rods: Rod[];
 	tags: FishTag[];
+	baits: Bait[];
 	levels: FishingUserLevel[];
 	rooms: FishingRoom[];
 }

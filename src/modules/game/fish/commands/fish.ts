@@ -7,7 +7,7 @@ export class FishCommand implements Command {
 	}
 
 	public get alias(): string[] {
-		return ["fish", "f"];
+		return ["fish", "f", "ㄴㅅ"];
 	}
 
 	public get description(): string {
@@ -30,13 +30,13 @@ export class FishCommand implements Command {
 		const rod = FishUtils.FISH_DATABASE.lastData.rods.find((e) => e.id === user.selectedRodId);
 		if (!rod) throw new Error("Rod not found, rod: " + user.selectedRodId + ", user: " + user.id);
 
+		const bait = FishUtils.FISH_DATABASE.lastData.baits.find((e) => e.id === user.currentBaitId);
 		const tag = user.selectedTagId ? FishUtils.FISH_DATABASE.lastData.tags.find((e) => e.id === user.selectedTagId) : null;
-		const fish = FishUtils.getRandomFish(rod, FishUtils.FISH_DATABASE.lastData.fishes);
+		const fish = FishUtils.getRandomFish(rod, bait, FishUtils.FISH_DATABASE.lastData.fishes);
 		const time = FishUtils.getRandomNumber(rod.speedBetween[0], rod.speedBetween[1]);
 		const exp = FishUtils.getFishExp(fish.length, fish.price, rod.exp);
 
 		info.replier.reply("낚시를 시작합니다..");
-
 		await FishUtils.sleep(time);
 
 		const finishedTexts = [

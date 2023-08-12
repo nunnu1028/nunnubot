@@ -17,7 +17,8 @@ function afterBuild() {
 	const compiledCount = JSON.parse(fs.readFileSync("./src/data/compiledCount.json", "utf8"));
 	fs.writeFileSync("./src/data/compiledCount.json", JSON.stringify({ count: compiledCount.count + 1 }), "utf8");
 	runOSCommand(`adb push ./src/data /sdcard/msgbot/Bots/${botName}/`);
-
+	runOSCommand("adb shell am broadcast -a com.xfl.msgbot.broadcast.compile -p com.xfl.msgbot --es name Bot");
+	runOSCommand("adb shell am broadcast -a com.xfl.msgbot.broadcast.set_bot_power -p com.xfl.msgbot --es name Bot --ez power true");
 	console.log("after build finished.");
 }
 

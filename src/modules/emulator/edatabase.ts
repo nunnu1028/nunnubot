@@ -12,7 +12,9 @@ export class EDatabaseManager<T = string> implements IDatabaseManager<T> {
 		private readonly _deserializer: (data: T) => string = (data: T) => {
 			return data as string;
 		}
-	) {}
+	) {
+		this._filePath = _filePath.replace("/sdcard/botData/", "./");
+	}
 
 	public get lastData(): T {
 		return this._lastData;

@@ -185,6 +185,8 @@ function reject(self, newValue) {
 	self._state = 2;
 	self._value = newValue;
 	finale(self);
+
+	throw new Error(JSON.stringify(self) + ": " + JSON.stringify(newValue));
 }
 
 function finale(self) {

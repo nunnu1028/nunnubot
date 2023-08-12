@@ -108,7 +108,7 @@ export class CommandManager {
 		if (checkingFunc(info)) return;
 
 		if (!info.message.startsWith(this._prefix)) return;
-		const command = this._commandMap.get(info.message.split(" ")[0].slice(this._prefix.length));
+		const command = this._commandMap.get(info.message.split(" ")[0].slice(this._prefix.length).toLowerCase());
 		if (command && !command.name.startsWith("_")) {
 			const level = command.check_level(info);
 			if (!level.permission) return info.replier.reply(level.text ?? "권한이 없습니다. 관리자에게 문의하세요.");
