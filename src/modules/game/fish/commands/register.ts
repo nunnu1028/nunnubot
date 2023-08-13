@@ -39,6 +39,11 @@ export class FishRegisterCommand implements Command {
 					continue;
 				}
 
+				if (lastName.length > 10) {
+					info.replier.reply("닉네임은 10글자를 넘을 수 없어요, 다시 한번 입력해줄래요?");
+					continue;
+				}
+
 				break;
 			}
 

@@ -18,6 +18,7 @@ export interface Fish {
 export interface FishData extends Fish {
 	minLength: number;
 	maxLength: number;
+	exp: number;
 }
 
 export interface Rod {
@@ -56,7 +57,6 @@ export interface FishTag {
 export interface FishingUserLevel {
 	name: string;
 	levelBetween: [number, number];
-	requiredExp: number;
 	requiredExpToNextLevel: number;
 }
 

@@ -32,15 +32,16 @@ export class FishCommand implements Command {
 
 		const bait = FishUtils.FISH_DATABASE.lastData.baits.find((e) => e.id === user.currentBaitId);
 		const tag = user.selectedTagId ? FishUtils.FISH_DATABASE.lastData.tags.find((e) => e.id === user.selectedTagId) : null;
-		const fish = FishUtils.getRandomFish(rod, bait, FishUtils.FISH_DATABASE.lastData.fishes);
+		const room = FishUtils.FISH_DATABASE.lastData.rooms.find((e) => e.id === user.currentRoomId);
+		const fish = FishUtils.getRandomFish(room, rod, bait, FishUtils.FISH_DATABASE.lastData.fishes);
 		const time = FishUtils.getRandomNumber(rod.speedBetween[0], rod.speedBetween[1]);
-		const exp = FishUtils.getFishExp(fish.length, fish.price, rod.exp);
+		const exp = FishUtils.getFishExp(fish.length, fish.price, rod.exp, fish.exp);
 
 		info.replier.reply("낚시를 시작합니다..");
 		await FishUtils.sleep(time);
 
 		const finishedTexts = [
-			`${user.name}${tag ? ` [${tag.name}]` : ""}님이 물고기를 낚았어요!`,
+			`${user.name}${tag ? ` [${tag.name}]` : ""}님이 물고기를 낚았어요!\n`,
 			"정보:",
 			`	이름: ${fish.name}`,
 			`	설명: ${fish.description}`,
@@ -56,11 +57,18 @@ export class FishCommand implements Command {
 		user.currentExp += exp;
 		FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
 
-		if (user.currentExp - user.level.requiredExp - (user.currentLevel - 1) * user.level.requiredExpToNextLevel > user.level.requiredExpToNextLevel) {
-			user.currentLevel += 1;
+		// TODO: 경험치 계산이 제대로 작돟하는지 확인필요
+		const userAllLevels = FishUtils.FISH_DATABASE.lastData.levels.filter((e) => e.levelBetween[1] <= user.currentLevel || e.name === user.level.name);
+		const userAllExps = userAllLevels.reduce((a, e) => {
+			if (e.name === user.level.name) return a + (user.currentLevel - e.levelBetween[0]) * user.level.requiredExpToNextLevel;
+			return a + e.requiredExpToNextLevel * (e.levelBetween[1] - e.levelBetween[0]);
+		}, 0);
 
-			if (user.currentLevel === user.level.levelBetween[1] + 1) {
-				const nextLevel = FishUtils.FISH_DATABASE.lastData.levels.find((e) => e.levelBetween[0] === user.level.levelBetween[1] + 1);
+		if (user.currentExp - userAllExps > user.level.requiredExpToNextLevel) {
+			user.currentLevel += Math.floor((user.currentExp - userAllExps) / user.level.requiredExpToNextLevel);
+
+			if (user.currentLevel > user.level.levelBetween[1]) {
+				const nextLevel = FishUtils.FISH_DATABASE.lastData.levels.find((e) => (e.levelBetween[1] > user.currentLevel || e.levelBetween[1] === -1) && e.levelBetween[0] <= user.currentLevel);
 				if (nextLevel) {
 					user.level = nextLevel;
 					user.currentLevel = nextLevel.levelBetween[0];

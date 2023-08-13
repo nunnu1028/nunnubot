@@ -5,6 +5,10 @@ export class HelpCommand implements Command {
 		return "help";
 	}
 
+	public get alias(): string[] {
+		return ["도움", "도움말"];
+	}
+
 	public get description(): string {
 		return "도와줘요!";
 	}

@@ -7,7 +7,7 @@ export class FishBucketCommand implements Command {
 	}
 
 	public get alias(): string[] {
-		return ["양동이", "ㅇㄷ", "b"];
+		return ["양동이", "ㅇㄷㅇ", "b"];
 	}
 
 	public get description(): string {
@@ -30,8 +30,10 @@ export class FishBucketCommand implements Command {
 		const tag = user.selectedTagId ? FishUtils.FISH_DATABASE.lastData.tags.find((e) => e.id === user.selectedTagId) : null;
 		const texts = [`[ ${user.name}${tag ? ` [${tag.name}]` : ""}님의 양동이 ]${"\u200b".repeat(500)}\n`];
 
-		for (const fish of user.fishes) {
-			texts.push(`${fish.name} - ${fish.description}`);
+		for (let index = 0; index < user.fishes.length; index++) {
+			const fish = user.fishes[index];
+
+			texts.push(`[${index}] ${fish.name} - ${fish.description}`);
 			texts.push(`    등급: ${fish.level}`);
 			texts.push(`    길이: ${fish.length}cm`);
 			texts.push(`    가격: ${fish.price}원\n`);

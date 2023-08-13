@@ -7,7 +7,7 @@ export class FishMyInfoCommand implements Command {
 	}
 
 	public get alias(): string[] {
-		return ["정보", "mi", "myinfo"];
+		return ["ㅈㅂ", "mi", "myinfo"];
 	}
 
 	public get description(): string {
@@ -31,7 +31,7 @@ export class FishMyInfoCommand implements Command {
 		const texts = [`[ ${user.name}${tag ? ` [${tag.name}]` : ""}님의 정보 ]${"\u200b".repeat(500)}\n`];
 
 		texts.push(`레벨: ${user.level.name} - ${user.currentLevel}`);
-		texts.push(`보유중인 돈: ${user.money}`);
+		texts.push(`보유중인 돈: ${user.money}원`);
 		texts.push(`보유중인 호칭들: ${user.tagIds.length > 0 ? user.tagIds.map((e) => FishUtils.FISH_DATABASE!.lastData.tags.find((t) => t.id === e)!.name).join(", ") : "없음"}`);
 		texts.push(`보유중인 낚시대: ${user.rodIds.length > 0 ? user.rodIds.map((e) => FishUtils.FISH_DATABASE!.lastData.rods.find((t) => t.id === e)!.name).join(", ") : "없음"}`);
 		texts.push(`사용중인 호칭: ${tag ? tag.name : "없음"}`);

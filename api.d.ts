@@ -27,7 +27,7 @@ declare interface ImageDB {
 }
 
 declare namespace Log {
-	export function d(data: string, showToast: boolean = false): void;
+	export function d(data: string | number, showToast: boolean = false): void;
 	export function debug(data: string, showToast: boolean = false): void;
 	export function e(data: string, showToast: boolean = false): void;
 	export function error(data: string, showToast: boolean = false): void;
