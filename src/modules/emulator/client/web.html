@@ -21,11 +21,7 @@
 			}
 
 			if (data.method === "MESSAGE") {
-				const chat = document.querySelector(".chat");
-				const p = document.createElement("p");
-				p.innerText = data.data.userName + ": " + data.data.message;
-				p.style.color = "red";
-				chat.appendChild(p);
+				handlingMessage(false, data.data);
 			}
 		};
 
@@ -108,14 +104,21 @@
 			if (res.data.status === "success") {
 				document.getElementById("message").value = "";
 
-				const chat = document.querySelector(".chat");
-				const p = document.createElement("p");
-				p.innerText = sessionInfo.userName + ": " + message;
-				p.style.color = "blue";
-				chat.appendChild(p);
+				handlingMessage(true, {
+					userName: sessionInfo.userName,
+					message: message
+				});
 			} else {
 				alert(res.data.status);
 			}
+		}
+
+		function handlingMessage(isMine, data) {
+			const chat = document.querySelector(".chat");
+			const p = document.createElement("pre");
+			p.innerText = data.userName + ": " + data.message;
+			p.style.color = isMine ? "blue" : "black";
+			chat.appendChild(p);
 		}
 	</script>
 
