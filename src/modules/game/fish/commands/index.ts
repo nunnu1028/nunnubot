@@ -6,3 +6,4 @@ export * from "./myinfo";
 export * from "./rods";
 export * from "./sell";
 export * from "./change-rod";
+export * from "./pictorial-book";

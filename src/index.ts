@@ -1,6 +1,6 @@
 import { HelpCommand } from "commands";
 import { CommandManager, notificationListener } from "core";
-import { FishBucketCommand, FishChangeRodCommand, FishCommand, FishMoveCommand, FishMyInfoCommand, FishRegisterCommand, FishRodsCommand, FishSellCommand } from "game";
+import { FishBucketCommand, FishChangeRodCommand, FishCommand, FishMoveCommand, FishMyInfoCommand, FishPictorialBookCommand, FishRegisterCommand, FishRodsCommand, FishSellCommand } from "game";
 
 const emulatorMode = typeof process !== "undefined" && process.argv.includes("--emulator");
 
@@ -19,6 +19,7 @@ commandManager.addCommand(new FishMyInfoCommand());
 commandManager.addCommand(new FishRodsCommand());
 commandManager.addCommand(new FishSellCommand());
 commandManager.addCommand(new FishChangeRodCommand());
+commandManager.addCommand(new FishPictorialBookCommand());
 
 function onMessage(room: string, message: string, sender: string, isGroupChat: boolean, replier: Replier, imageDB: ImageDB, packageName: string, chatId: string, hashedUserId: string): void {
 	commandManager.execute({ room, message, sender, isGroupChat, replier, imageDB, packageName, chatId, hashedUserId });

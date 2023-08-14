@@ -25,7 +25,7 @@ export class FishMyInfoCommand implements Command {
 	public async execute(info: MessageInfo): Promise<void> {
 		if (!FishUtils.FISH_DATABASE) FishUtils.initDatabase();
 		const user = FishUtils.FISH_DATABASE.lastData.users.find((e) => e.id === info.hashedUserId);
-		if (!user) return info.replier.reply("낚시 게임에 가입하지 않았어요. 낚시가입 혹은 fr 을 입력해주세요!");
+		if (!user) return info.replier.reply("[ 낚시 게임에 가입하지 않았어요. 낚시가입 혹은 fr 을 입력해주세요! ]");
 
 		const tag = user.selectedTagId ? FishUtils.FISH_DATABASE.lastData.tags.find((e) => e.id === user.selectedTagId) : null;
 		const texts = [`[ ${user.name}${tag ? ` [${tag.name}]` : ""}님의 정보 ]${"\u200b".repeat(500)}\n`];

@@ -25,7 +25,7 @@ export class FishCommand implements Command {
 	public async execute(info: MessageInfo): Promise<void> {
 		if (!FishUtils.FISH_DATABASE) FishUtils.initDatabase();
 		const user = FishUtils.FISH_DATABASE.lastData.users.find((e) => e.id === info.hashedUserId);
-		if (!user) return info.replier.reply("낚시 게임에 가입하지 않았어요. 낚시가입 혹은 fr 을 입력해주세요!");
+		if (!user) return info.replier.reply("[ 낚시 게임에 가입하지 않았어요. 낚시가입 혹은 fr 을 입력해주세요! ]");
 
 		const rod = FishUtils.FISH_DATABASE.lastData.rods.find((e) => e.id === user.selectedRodId);
 		if (!rod) throw new Error("Rod not found, rod: " + user.selectedRodId + ", user: " + user.id);
@@ -37,11 +37,11 @@ export class FishCommand implements Command {
 		const time = FishUtils.getRandomNumber(rod.speedBetween[0], rod.speedBetween[1]);
 		const exp = FishUtils.getFishExp(fish.length, fish.price, rod.exp, fish.exp);
 
-		info.replier.reply("낚시를 시작합니다..");
+		info.replier.reply("[ 낚시를 시작합니다.. 무엇이 낚일까요.. ]");
 		await FishUtils.sleep(time);
 
 		const finishedTexts = [
-			`${user.name}${tag ? ` [${tag.name}]` : ""}님이 물고기를 낚았어요!\n`,
+			`[ ${user.name}${tag ? ` [${tag.name}]` : ""}님이 물고기를 낚았어요! ]\n`,
 			"정보:",
 			`	이름: ${fish.name}`,
 			`	설명: ${fish.description}`,
@@ -68,12 +68,12 @@ export class FishCommand implements Command {
 					user.level = nextLevel;
 					FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
 
-					return info.replier.reply(["축하합니다! 다음 단계로 레벨업 하셨어요!", "레벨업 정보:", `	레벨단계: ${user.level.name}`, `	레벨: ${user.level.levelBetween[0]}레벨`].join("\n"));
+					return info.replier.reply(["[ 축하합니다! 다음 단계로 레벨업 하셨어요! ]\n", "레벨업 정보:", `	레벨단계: ${user.level.name}`, `	레벨: ${user.level.levelBetween[0]}레벨`].join("\n"));
 				}
 			}
 
 			FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
-			info.replier.reply(["축하합니다! 레벨업 하셨어요!", "레벨업 정보:", `	레벨단계: ${user.level.name}`, `	레벨: ${user.currentLevel}레벨`].join("\n"));
+			info.replier.reply(["[ 축하합니다! 레벨업 하셨어요! ]\n", "레벨업 정보:", `	레벨단계: ${user.level.name}`, `	레벨: ${user.currentLevel}레벨`].join("\n"));
 		}
 	}
 }
