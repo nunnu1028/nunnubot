@@ -98,6 +98,7 @@ export namespace FishUtils {
 			money: 10000,
 			level: FishUtils.FISH_DATABASE.lastData.levels[0]!,
 			currentLevel: 1,
+			currentLevelExp: 0,
 			currentExp: 0,
 			currentRoomId: "DEFAULT",
 			currentBaitId: ""

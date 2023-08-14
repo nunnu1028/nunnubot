@@ -77,6 +77,7 @@ export interface FishingUser {
 	level: FishingUserLevel;
 	currentLevel: number;
 	currentExp: number;
+	currentLevelExp: number;
 	currentRoomId: string;
 	currentBaitId: string;
 }

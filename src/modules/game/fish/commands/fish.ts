@@ -54,24 +54,18 @@ export class FishCommand implements Command {
 		info.replier.reply(finishedTexts.join("\n"));
 
 		user.fishes.push(fish);
+		user.currentLevelExp += exp;
 		user.currentExp += exp;
 		FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
 
-		// TODO: 경험치 계산이 제대로 작돟하는지 확인필요
-		const userAllLevels = FishUtils.FISH_DATABASE.lastData.levels.filter((e) => e.levelBetween[1] <= user.currentLevel || e.name === user.level.name);
-		const userAllExps = userAllLevels.reduce((a, e) => {
-			if (e.name === user.level.name) return a + (user.currentLevel - e.levelBetween[0]) * user.level.requiredExpToNextLevel;
-			return a + e.requiredExpToNextLevel * (e.levelBetween[1] - e.levelBetween[0]);
-		}, 0);
+		if (user.currentLevelExp > user.level.requiredExpToNextLevel) {
+			user.currentLevel += Math.floor(user.currentLevelExp / user.level.requiredExpToNextLevel);
+			user.currentLevelExp = user.currentLevelExp % user.level.requiredExpToNextLevel;
 
-		if (user.currentExp - userAllExps > user.level.requiredExpToNextLevel) {
-			user.currentLevel += Math.floor((user.currentExp - userAllExps) / user.level.requiredExpToNextLevel);
-
-			if (user.currentLevel > user.level.levelBetween[1]) {
+			if (user.currentLevel > user.level.levelBetween[1] && user.level.levelBetween[1] !== -1) {
 				const nextLevel = FishUtils.FISH_DATABASE.lastData.levels.find((e) => (e.levelBetween[1] > user.currentLevel || e.levelBetween[1] === -1) && e.levelBetween[0] <= user.currentLevel);
 				if (nextLevel) {
 					user.level = nextLevel;
-					user.currentLevel = nextLevel.levelBetween[0];
 					FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
 
 					return info.replier.reply(["축하합니다! 다음 단계로 레벨업 하셨어요!", "레벨업 정보:", `	레벨단계: ${user.level.name}`, `	레벨: ${user.level.levelBetween[0]}레벨`].join("\n"));
