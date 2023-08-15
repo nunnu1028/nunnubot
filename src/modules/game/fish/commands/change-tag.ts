@@ -36,6 +36,6 @@ export class FishChangeTagCommand implements Command {
 		const tag = user.tags[parseInt(args[0])];
 		user.selectedTagIndex = parseInt(args[0]);
 
-		info.replier.reply(`${FishUtils.getUserName(user)}님의 낚싯대 변경 ]\n${tag!.name}로 변경되었어요!`);
+		info.replier.reply(`[ ${FishUtils.getUserName(user)}님의 낚싯대 변경 ]\n${tag!.name}로 변경되었어요!`);
 	}
 }

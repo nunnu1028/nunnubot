@@ -36,6 +36,6 @@ export class FishChangeRodCommand implements Command {
 		const rod = user.rods[parseInt(args[0])];
 		user.selectedRodIndex = parseInt(args[0]);
 
-		info.replier.reply(`${FishUtils.getUserName(user)}님의 낚싯대 변경 ]\n${rod!.name}로 변경되었어요!`);
+		info.replier.reply(`[ ${FishUtils.getUserName(user)}님의 낚싯대 변경 ]\n${rod!.name}로 변경되었어요!`);
 	}
 }

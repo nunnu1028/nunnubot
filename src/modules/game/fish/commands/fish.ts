@@ -1,8 +1,9 @@
 import { CheckLevelRes, Command, MessageInfo } from "core";
 import { FishUtils } from "../fish-utils";
-import { Bait, FishData, FishingRoom, Rod } from "../fish-data";
 
 export class FishCommand implements Command {
+	private readonly _fishingList: string[] = [];
+
 	public get name(): string {
 		return "낚시";
 	}
@@ -27,6 +28,7 @@ export class FishCommand implements Command {
 		if (!FishUtils.FISH_DATABASE) FishUtils.initDatabase();
 		const user = FishUtils.FISH_DATABASE.lastData.users.find((e) => e.id === info.hashedUserId);
 		if (!user) return info.replier.reply("[ 낚시 게임에 가입하지 않았어요. 낚시가입 혹은 fr 을 입력해주세요! ]");
+		if (this._fishingList.includes(info.hashedUserId)) return info.replier.reply("[ 이미 낚시중이에요! ]");
 
 		const rod = user.rods[user.selectedRodIndex];
 		const bait = user.baits[user.selectedBaitIndex];
@@ -37,9 +39,11 @@ export class FishCommand implements Command {
 		const exp = FishUtils.getFishExp(fish.length, fish.price, rod.exp, fish.exp);
 
 		info.replier.reply("[ 낚시를 시작합니다.. 무엇이 낚일까요.. ]");
+		this._fishingList.push(info.hashedUserId);
 		await FishUtils.sleep(time);
-
+		this._fishingList.splice(this._fishingList.indexOf(info.hashedUserId), 1);
 		rod.usedCount++;
+
 		if (rod.maxCount !== -1 && rod.usedCount > rod.maxCount) {
 			info.replier.reply(`[ 아이고 이런! 낚싯대가 부러졌어요! 물고기가 도망가버렸어요..\n  기본 낚싯대로 변경됨. ]`);
 			user.rods.splice(user.selectedRodIndex, 1);

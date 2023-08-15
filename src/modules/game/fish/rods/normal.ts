@@ -1,9 +1,9 @@
 import { Rod } from "../fish-data";
 
 export const NORMAL_ROD: Rod = {
-	description: "평범한 낚싯대",
 	id: "DEFAULT",
 	name: "기본 낚싯대",
+	description: "평범한 낚싯대",
 	percentage: {
 		normal: 97,
 		rare: 2,

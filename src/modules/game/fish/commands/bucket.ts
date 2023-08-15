@@ -26,7 +26,7 @@ export class FishBucketCommand implements Command {
 		if (!FishUtils.FISH_DATABASE) FishUtils.initDatabase();
 		const user = FishUtils.FISH_DATABASE.lastData.users.find((e) => e.id === info.hashedUserId);
 		if (!user) return info.replier.reply("[ 낚시 게임에 가입하지 않았어요. 낚시가입 혹은 fr 을 입력해주세요! ]");
-		const texts = [`${FishUtils.getUserName(user)}님의 양동이 ]${"\u200b".repeat(500)}\n`];
+		const texts = [`[ ${FishUtils.getUserName(user)}님의 양동이 ]${"\u200b".repeat(500)}\n`];
 
 		for (let index = 0; index < user.fishes.length; index++) {
 			const fish = user.fishes[index];

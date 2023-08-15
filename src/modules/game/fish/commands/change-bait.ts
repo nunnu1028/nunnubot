@@ -36,6 +36,6 @@ export class FishChangeBaitCommand implements Command {
 		const bait = user.baits[parseInt(args[0])];
 		user.selectedBaitIndex = parseInt(args[0]);
 
-		info.replier.reply(`${FishUtils.getUserName(user)}님의 낚싯대 변경 ]\n${bait!.name}로 변경되었어요!`);
+		info.replier.reply(`[ ${FishUtils.getUserName(user)}님의 낚싯대 변경 ]\n${bait!.name}로 변경되었어요!`);
 	}
 }
