@@ -8,7 +8,7 @@ export class FishSellCommand implements Command {
 	}
 
 	public get alias(): string[] {
-		return ["판매", "ㅍ", "sell"];
+		return ["ㅍ", "sell"];
 	}
 
 	public get description(): string {
@@ -16,7 +16,7 @@ export class FishSellCommand implements Command {
 	}
 
 	public get usage(): string {
-		return "<타입 [물고기|낚싯대]> <번호 [숫자 혹은 전부]>";
+		return "<타입 (물고기 | 낚싯대) <번호 (숫자 | 전부)>";
 	}
 
 	public check_level(info: MessageInfo): CheckLevelRes {
@@ -29,14 +29,15 @@ export class FishSellCommand implements Command {
 		if (!user) return info.replier.reply("[ 낚시 게임에 가입하지 않았어요. 낚시가입 혹은 fr 을 입력해주세요! ]");
 
 		const args = info.message.split(" ").slice(1);
-		if (args.length < 2 || !["물고기", "낚싯대"].includes(args[0]) || (args[1] !== "전부" && isNaN(parseInt(args[1])))) return info.replier.reply(this.usage + " 식으로 입력해주세요!");
+		if (args.length < 2 || !["물고기", "낚싯대"].includes(args[0]) || (args[1] !== "전부" && isNaN(parseInt(args[1])))) return info.replier.reply("[ " + this.usage + " 식으로 입력해주세요! ]");
 
 		const type = args[0];
 		if (args[1] !== "전부") {
 			const index = parseInt(args[1]);
-			const target = type === "물고기" ? user.fishes[index] : user.rodIds[index] ? FishUtils.FISH_DATABASE.lastData.rods.find((e) => e.id === user.rodIds[index]) : null;
+			const target = type === "물고기" ? user.fishes[index] : user.rods[index] ? user.rods[index] : null;
 			if (!target) return info.replier.reply("[ 해당 번호의 물고기/낚싯대가 없어요! ]");
 			if (target.price === -1) return info.replier.reply("[ 해당 물고기/낚싯대는 판매할 수 없어요! ]");
+			if (args[1] === "낚싯대" && index === user.selectedRodIndex) return info.replier.reply("[ 장착중인 낚싯대는 판매할 수 없어요! ]");
 
 			const isOkay = await commandManager
 				.ask(
@@ -52,15 +53,13 @@ export class FishSellCommand implements Command {
 
 			user.money += target.price;
 			if (type === "물고기") user.fishes.splice(index, 1);
-			else user.rodIds.splice(index, 1);
+			else user.rods.splice(index, 1);
 
-			FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
-
-			return info.replier.reply(`[ 판매가 완료되었어요! ]\n\n	판매한 ${type}의 가격: ${target.price}원\n	현재 잔액: ${user.money}원`);
+			return info.replier.reply(`[ ${FishUtils.getUserName(user)}님, 판매가 완료되었어요! ]\n\n	판매한 ${type}의 가격: ${target.price}원\n	현재 잔액: ${user.money}원`);
 		}
 
 		const targets = (
-			(type === "물고기" ? user.fishes : user.rodIds.map((e) => FishUtils.FISH_DATABASE.lastData.rods.find((f) => f.id === e))) as {
+			(type === "물고기" ? user.fishes : user.rods) as {
 				price: number;
 			}[]
 		).filter((e) => e.price != -1) as Fish[] | Rod[];
@@ -81,10 +80,9 @@ export class FishSellCommand implements Command {
 
 		const price = (targets as { price: number }[]).reduce((a, b) => a + b.price, 0);
 		user.money += price;
-		if (type === "물고기") user.fishes = [];
-		else user.rodIds = [];
-		FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
+		if (type === "물고기") user.fishes = user.fishes.filter((e) => e.price === -1);
+		else user.rods = user.rods.filter((e) => e.price === -1);
 
-		return info.replier.reply(`[ 판매가 완료되었어요! ]\n\n	판매한 ${type}들의 가격: ${price}원\n	현재 잔액: ${user.money}원`);
+		return info.replier.reply(`[ ${FishUtils.getUserName(user)}님, 판매가 완료되었어요! ]\n\n	판매한 ${type}들의 가격: ${price}원\n	현재 잔액: ${user.money}원`);
 	}
 }

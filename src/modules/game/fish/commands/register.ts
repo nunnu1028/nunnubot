@@ -51,15 +51,12 @@ export class FishRegisterCommand implements Command {
 		})();
 
 		const isOkay = await commandManager.ask(info, "[ " + userName + " 으로 가입하시겠습니까? (Y or N) ]").get();
-
 		if (!["Y", "YES", "예", "네", "ㅇㅇ"].includes(isOkay.toUpperCase())) return info.replier.reply("[ 가입이 취소되었어요, 다시 가입을 진행해주세요! ]");
 
 		FishUtils.FISH_DATABASE.lastData.users.push({
 			...FishUtils.getDefaultUserData(userName),
 			id: info.hashedUserId
 		});
-
-		FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
 
 		info.replier.reply(`[ 낚시 게임에 가입이 완료되었어요!\n  이름: ${userName}\n  낚시 혹은 ㄴㅅ를 입력해 게임을 시작해보세요! ]`);
 	}

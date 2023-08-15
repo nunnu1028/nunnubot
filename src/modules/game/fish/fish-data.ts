@@ -33,6 +33,9 @@ export interface Rod {
 		legendary: number;
 	};
 
+	usedCount: number;
+	maxCount: number;
+
 	speedBetween: [number, number];
 	exp: number;
 	price: number;
@@ -65,12 +68,15 @@ export interface FishingUser {
 	name: string;
 
 	fishes: Fish[];
-	rodIds: string[];
-	tagIds: string[];
-	baitIds: string[];
+	rods: Rod[];
+	tags: FishTag[];
+	baits: Bait[];
+	caughtFishIds: string[];
 
-	selectedRodId: string;
-	selectedTagId: string;
+	selectedRodIndex: number;
+	selectedTagIndex: number;
+	selectedBaitIndex: number;
+	currentRoomId: string;
 
 	money: number;
 
@@ -78,13 +84,12 @@ export interface FishingUser {
 	currentLevel: number;
 	currentExp: number;
 	currentLevelExp: number;
-	currentRoomId: string;
-	currentBaitId: string;
 }
 
 export interface Bait {
 	id: string;
 	name: string;
+	description: string;
 	price: number;
 
 	percentage: {

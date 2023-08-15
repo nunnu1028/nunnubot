@@ -1,5 +1,6 @@
 import { CheckLevelRes, Command, MessageInfo } from "core";
 import { FishUtils } from "../fish-utils";
+import { Bait, FishData, FishingRoom, Rod } from "../fish-data";
 
 export class FishCommand implements Command {
 	public get name(): string {
@@ -7,7 +8,7 @@ export class FishCommand implements Command {
 	}
 
 	public get alias(): string[] {
-		return ["fish", "f", "ㄴㅅ"];
+		return ["ㄴㅅ", "f"];
 	}
 
 	public get description(): string {
@@ -27,18 +28,25 @@ export class FishCommand implements Command {
 		const user = FishUtils.FISH_DATABASE.lastData.users.find((e) => e.id === info.hashedUserId);
 		if (!user) return info.replier.reply("[ 낚시 게임에 가입하지 않았어요. 낚시가입 혹은 fr 을 입력해주세요! ]");
 
-		const rod = FishUtils.FISH_DATABASE.lastData.rods.find((e) => e.id === user.selectedRodId);
-		if (!rod) throw new Error("Rod not found, rod: " + user.selectedRodId + ", user: " + user.id);
-
-		const bait = FishUtils.FISH_DATABASE.lastData.baits.find((e) => e.id === user.currentBaitId);
-		const tag = user.selectedTagId ? FishUtils.FISH_DATABASE.lastData.tags.find((e) => e.id === user.selectedTagId) : null;
+		const rod = user.rods[user.selectedRodIndex];
+		const bait = user.baits[user.selectedBaitIndex];
+		const tag = user.tags[user.selectedTagIndex];
 		const room = FishUtils.FISH_DATABASE.lastData.rooms.find((e) => e.id === user.currentRoomId);
 		const fish = FishUtils.getRandomFish(room, rod, bait, FishUtils.FISH_DATABASE.lastData.fishes);
-		const time = FishUtils.getRandomNumber(rod.speedBetween[0], rod.speedBetween[1]);
+		const time = FishUtils.getRandomNumber(rod.speedBetween[0], rod.speedBetween[1] - bait.speedEffect);
 		const exp = FishUtils.getFishExp(fish.length, fish.price, rod.exp, fish.exp);
 
 		info.replier.reply("[ 낚시를 시작합니다.. 무엇이 낚일까요.. ]");
 		await FishUtils.sleep(time);
+
+		rod.usedCount++;
+		if (rod.maxCount !== -1 && rod.usedCount > rod.maxCount) {
+			info.replier.reply(`[ 아이고 이런! 낚싯대가 부러졌어요! 물고기가 도망가버렸어요..\n  기본 낚싯대로 변경됨. ]`);
+			user.rods.splice(user.selectedRodIndex, 1);
+			user.selectedRodIndex = user.rods.findIndex((e) => e.id === "NORMAL") || 0;
+
+			return;
+		}
 
 		const finishedTexts = [
 			`[ ${user.name}${tag ? ` [${tag.name}]` : ""}님이 물고기를 낚았어요! ]\n`,
@@ -48,15 +56,25 @@ export class FishCommand implements Command {
 			`	등급: ${fish.level}`,
 			`	길이: ${fish.length}cm`,
 			`	가격: ${fish.price}원`,
-			`	오른 경험치: ${exp}`
+			`	오른 경험치: ${exp}\n`
 		];
 
-		info.replier.reply(finishedTexts.join("\n"));
+		if (user.selectedBaitIndex !== 0) {
+			finishedTexts.push(`${bait.name}을 한개 소진함.`);
+
+			user.baits.splice(user.selectedBaitIndex, 1);
+			user.selectedBaitIndex = user.baits.findIndex((e) => e.id === bait.id) || 0;
+			if (user.selectedBaitIndex === 0) {
+				finishedTexts.push(`${bait.name} 미끼를 다 소진하여 기본 미끼로 변경됨.`);
+			}
+		}
+
+		info.replier.reply(finishedTexts.join("\n").trim());
 
 		user.fishes.push(fish);
+		user.caughtFishIds.push(fish.id);
 		user.currentLevelExp += exp;
 		user.currentExp += exp;
-		FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
 
 		if (user.currentLevelExp > user.level.requiredExpToNextLevel) {
 			user.currentLevel += Math.floor(user.currentLevelExp / user.level.requiredExpToNextLevel);
@@ -66,13 +84,11 @@ export class FishCommand implements Command {
 				const nextLevel = FishUtils.FISH_DATABASE.lastData.levels.find((e) => (e.levelBetween[1] > user.currentLevel || e.levelBetween[1] === -1) && e.levelBetween[0] <= user.currentLevel);
 				if (nextLevel) {
 					user.level = nextLevel;
-					FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
 
 					return info.replier.reply(["[ 축하합니다! 다음 단계로 레벨업 하셨어요! ]\n", "레벨업 정보:", `	레벨단계: ${user.level.name}`, `	레벨: ${user.level.levelBetween[0]}레벨`].join("\n"));
 				}
 			}
 
-			FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
 			info.replier.reply(["[ 축하합니다! 레벨업 하셨어요! ]\n", "레벨업 정보:", `	레벨단계: ${user.level.name}`, `	레벨: ${user.currentLevel}레벨`].join("\n"));
 		}
 	}

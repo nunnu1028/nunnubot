@@ -38,9 +38,8 @@ export class FishPictorialBookCommand implements Command {
 				continue;
 			}
 
-			// 잡아봄/안잡아봄 구분예정
 			for (const fish of fishes) {
-				texts.push(`\n${fish.name} - ${fish.description}`);
+				texts.push(`\n${fish.name} - ${fish.description} ${user.caughtFishIds.includes(fish.id) ? "(잡아봄)" : "(안잡아봄)"}`);
 				texts.push(`	최소 길이: ${fish.minLength}cm`);
 				texts.push(`	최대 길이: ${fish.maxLength}cm`);
 			}

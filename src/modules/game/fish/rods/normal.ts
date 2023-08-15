@@ -5,11 +5,13 @@ export const NORMAL_ROD: Rod = {
 	id: "DEFAULT",
 	name: "기본 낚싯대",
 	percentage: {
-		normal: 95,
-		rare: 3,
-		epic: 2,
+		normal: 97,
+		rare: 2,
+		epic: 1,
 		legendary: 0
 	},
+	usedCount: 0,
+	maxCount: -1,
 	price: -1,
 	speedBetween: [10, 60],
 	exp: 10

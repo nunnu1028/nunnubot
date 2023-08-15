@@ -30,14 +30,12 @@ export class FishChangeRodCommand implements Command {
 		const args = info.message.split(" ").slice(1);
 		if (!args[0] || isNaN(parseInt(args[0]))) return info.replier.reply("[ 낚싯대 번호를 입력해주세요! ]");
 
-		const tag = user.selectedTagId ? FishUtils.FISH_DATABASE.lastData.tags.find((e) => e.id === user.selectedTagId) : null;
-		if (!user.rodIds[parseInt(args[0])]) return info.replier.reply("[ 해당 낚싯대는 존재하지 않아요! ]");
-		if (user.selectedRodId === user.rodIds[parseInt(args[0])]) return info.replier.reply("[ 이미 해당 낚싯대를 장착하고 있어요! ]");
+		if (!user.rods[parseInt(args[0])]) return info.replier.reply("[ 해당 낚싯대는 존재하지 않아요! ]");
+		if (user.selectedRodIndex === parseInt(args[0])) return info.replier.reply("[ 이미 해당 낚싯대를 장착하고 있어요! ]");
 
-		const rod = FishUtils.FISH_DATABASE.lastData.rods.find((e) => e.id === user.rodIds[parseInt(args[0])]);
-		user.selectedRodId = rod!.id;
-		FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
+		const rod = user.rods[parseInt(args[0])];
+		user.selectedRodIndex = parseInt(args[0]);
 
-		info.replier.reply(`[ ${user.name}${tag ? ` [${tag.name}]` : ""}님의 낚싯대 변경 ]\n${rod!.name} 낚싯대로 변경되었어요!`);
+		info.replier.reply(`${FishUtils.getUserName(user)}님의 낚싯대 변경 ]\n${rod!.name}로 변경되었어요!`);
 	}
 }

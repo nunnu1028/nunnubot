@@ -1,8 +1,9 @@
 import { Bait } from "../fish-data";
 
 export const DEFAULT_BAIT: Bait = {
-	id: "",
-	name: "",
+	id: "DEFAULT",
+	name: "기본 미끼",
+	description: "기본 미끼입니다.",
 	price: -1,
 
 	percentage: {
@@ -14,3 +15,5 @@ export const DEFAULT_BAIT: Bait = {
 
 	speedEffect: 0
 };
+
+export * from "./earthworm";

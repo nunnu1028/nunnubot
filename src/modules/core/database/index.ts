@@ -11,6 +11,7 @@ export interface IDatabaseManager<T = string> {
 export class DatabaseManager<T = string> implements IDatabaseManager<T> {
 	public static classConstructor: CDatabaseManager<any> = DatabaseManager;
 	private _lastData: T | null = null;
+	private _lastDataString: string | null = null;
 
 	constructor(
 		private readonly _filePath: string,
@@ -42,6 +43,15 @@ export class DatabaseManager<T = string> implements IDatabaseManager<T> {
 
 		const data = FileStream.read(this._filePath);
 		this._lastData = this._serializer(data);
+
+		setInterval(() => {
+			if (this._lastDataString !== this._deserializer(this._lastData)) {
+				this.save(this._lastData!);
+
+				this._lastDataString = this._deserializer(this._lastData);
+			}
+		}, 1);
+
 		return this._lastData;
 	}
 

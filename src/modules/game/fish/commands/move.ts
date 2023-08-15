@@ -7,7 +7,7 @@ export class FishMoveCommand implements Command {
 	}
 
 	public get alias(): string[] {
-		return ["fm", "ㅇㄷ"];
+		return ["ㅇㄷ", "fm"];
 	}
 
 	public get description(): string {
@@ -36,7 +36,6 @@ export class FishMoveCommand implements Command {
 		if (user.currentLevel < roomInfo.requiredLevel) return info.replier.reply("[ 그 낚싯터에 들어가기에는 레벨이 부족해요! ]");
 
 		user.currentRoomId = roomInfo.id;
-		FishUtils.FISH_DATABASE.save(FishUtils.FISH_DATABASE.lastData);
 
 		info.replier.reply(`[ 낚싯터 이동이 완료되었어요!\n  현재 계신 낚싯터 이름은 ${roomInfo.name} 이에요! ]`);
 	}
