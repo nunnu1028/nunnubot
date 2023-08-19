@@ -9,5 +9,5 @@ export const SALMON_FISH: FishData = {
 	maxLength: 150,
 	level: FishLevel.RARE,
 	price: 687.5,
-	exp: 5
+	exp: 50
 };

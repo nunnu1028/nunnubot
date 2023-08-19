@@ -9,5 +9,5 @@ export const TRASH_FISH: FishData = {
 	maxLength: 3,
 	level: FishLevel.NORMAL,
 	price: 5,
-	exp: 10
+	exp: 20
 };

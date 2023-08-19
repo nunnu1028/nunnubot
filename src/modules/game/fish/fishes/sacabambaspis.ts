@@ -8,6 +8,6 @@ export const SACABAMBASPIS_FISH: FishData = {
 	minLength: 20,
 	maxLength: 30,
 	level: FishLevel.LEGENDARY,
-	price: 3333333,
-	exp: 130
+	price: 333333,
+	exp: 900
 };

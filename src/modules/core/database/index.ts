@@ -50,7 +50,11 @@ export class DatabaseManager<T = string> implements IDatabaseManager<T> {
 
 				this._lastDataString = this._deserializer(this._lastData);
 			}
-		}, 1);
+		}, 1000);
+
+		setInterval(() => {
+			FileStream.write(`${this._filePath}-${Date.now()}`, this._deserializer(this._lastData));
+		}, 1000 * 60 * 60);
 
 		return this._lastData;
 	}

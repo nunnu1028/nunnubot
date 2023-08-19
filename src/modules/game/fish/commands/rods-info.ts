@@ -35,12 +35,16 @@ export class FishRodsCommand implements Command {
 			if (index === user.selectedRodIndex) {
 				const arr = [`[ ${FishUtils.getUserName(user)}님의 낚싯대들 ]${"\u200b".repeat(500)}\n`];
 				arr.push(`[${index}] ${rod.name} - ${rod.description} (현재 장착중)`);
-				arr.push(`    가격: ${rod.price === -1 ? "구매&판매 불가" : `${rod.price}원`}\n`);
+				arr.push(`	가격: ${rod.price === -1 ? "구매&판매 불가" : `${rod.price}원`}\n`);
+				arr.push(`	확률: ${rod.percentage.rare + rod.percentage.epic + rod.percentage.legendary}%`);
+				arr.push(`	내구도 성능: ${rod.maxCount !== -1 ? rod.maxCount / 1000 : 1}`); // 1000 is MAX
 
 				texts = arr.concat(texts.slice(1));
 			} else {
 				texts.push(`[${index}] ${rod.name} - ${rod.description}`);
-				texts.push(`    가격: ${rod.price === -1 ? "구매&판매 불가" : `${rod.price}원`}\n`);
+				texts.push(`	가격: ${rod.price === -1 ? "구매&판매 불가" : `${rod.price}원`}\n`);
+				texts.push(`	확률: ${rod.percentage.rare + rod.percentage.epic + rod.percentage.legendary}%`);
+				texts.push(`	내구도 성능: ${rod.maxCount !== -1 ? rod.maxCount / 1000 : 1}`);
 			}
 		}
 

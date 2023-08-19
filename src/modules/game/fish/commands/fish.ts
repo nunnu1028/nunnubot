@@ -9,7 +9,7 @@ export class FishCommand implements Command {
 	}
 
 	public get alias(): string[] {
-		return ["ㄴㅅ", "f"];
+		return ["ㄴㅅ", "f", "나낏"];
 	}
 
 	public get description(): string {
@@ -36,7 +36,7 @@ export class FishCommand implements Command {
 		const room = FishUtils.FISH_DATABASE.lastData.rooms.find((e) => e.id === user.currentRoomId);
 		const fish = FishUtils.getRandomFish(room, rod, bait, FishUtils.FISH_DATABASE.lastData.fishes);
 		const time = FishUtils.getRandomNumber(rod.speedBetween[0], rod.speedBetween[1] - bait.speedEffect);
-		const exp = FishUtils.getFishExp(fish.length, fish.price, rod.exp, fish.exp);
+		const exp = FishUtils.getFishExp(fish.length, rod.exp, fish.exp);
 
 		info.replier.reply("[ 낚시를 시작합니다.. 무엇이 낚일까요.. ]");
 		this._fishingList.push(info.hashedUserId);
@@ -80,6 +80,8 @@ export class FishCommand implements Command {
 		user.currentLevelExp += exp;
 		user.currentExp += exp;
 
+		const currentLevelTemp = user.currentLevel;
+
 		if (user.currentLevelExp > user.level.requiredExpToNextLevel) {
 			user.currentLevel += Math.floor(user.currentLevelExp / user.level.requiredExpToNextLevel);
 			user.currentLevelExp = user.currentLevelExp % user.level.requiredExpToNextLevel;
@@ -88,8 +90,20 @@ export class FishCommand implements Command {
 				const nextLevel = FishUtils.FISH_DATABASE.lastData.levels.find((e) => (e.levelBetween[1] > user.currentLevel || e.levelBetween[1] === -1) && e.levelBetween[0] <= user.currentLevel);
 				if (nextLevel) {
 					user.level = nextLevel;
+					const unlockedItemTexts = [];
 
-					return info.replier.reply(["[ 축하합니다! 다음 단계로 레벨업 하셨어요! ]\n", "레벨업 정보:", `	레벨단계: ${user.level.name}`, `	레벨: ${user.level.levelBetween[0]}레벨`].join("\n"));
+					for (const room of FishUtils.FISH_DATABASE.lastData.rooms) {
+						if (room.requiredLevel < user.currentLevel && room.requiredLevel > currentLevelTemp) {
+							unlockedItemTexts.push(`- 이제 ${room.name}에 들어갈 수 있어요! 이동 커맨드를 치면 이동할 수 있답니다!`);
+						}
+					}
+
+					info.replier.reply(["[ 축하합니다! 다음 단계로 레벨업 하셨어요! ]\n", "레벨업 정보:", `	레벨단계: ${user.level.name}`, `	레벨: ${user.level.levelBetween[0]}레벨`].join("\n"));
+					if (unlockedItemTexts.length > 0) {
+						info.replier.reply(`[ ${unlockedItemTexts.join("\n  ")} ]`);
+					}
+
+					return;
 				}
 			}
 

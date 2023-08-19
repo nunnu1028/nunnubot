@@ -8,6 +8,6 @@ export const STURGEON_FISH: FishData = {
 	minLength: 100,
 	maxLength: 300,
 	level: FishLevel.EPIC,
-	price: 3500,
-	exp: 13
+	price: 2000,
+	exp: 70
 };

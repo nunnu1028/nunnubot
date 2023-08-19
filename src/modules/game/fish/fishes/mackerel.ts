@@ -8,6 +8,6 @@ export const MACKEREL_FISH: FishData = {
 	minLength: 15,
 	maxLength: 45,
 	level: FishLevel.NORMAL,
-	price: 233,
-	exp: 1
+	price: 200,
+	exp: 20
 };

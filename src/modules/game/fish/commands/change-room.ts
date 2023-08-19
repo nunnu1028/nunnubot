@@ -1,7 +1,7 @@
 import { CheckLevelRes, Command, MessageInfo } from "core";
 import { FishUtils } from "../fish-utils";
 
-export class FishMoveCommand implements Command {
+export class FishChangeRoomCommand implements Command {
 	public get name(): string {
 		return "낚시이동";
 	}
@@ -27,7 +27,7 @@ export class FishMoveCommand implements Command {
 		const user = FishUtils.FISH_DATABASE.lastData.users.find((e) => e.id === info.hashedUserId);
 		if (!user) return info.replier.reply("[ 낚시 게임에 가입하지 않았어요. 낚시가입 혹은 fr 을 입력해주세요! ]");
 
-		const roomName = info.message.split(" ").slice(1).join(" ");
+		const roomName = info.message.split(" ").slice(1).join(" ").split(" - ")[0];
 		if (!roomName) return info.replier.reply("[ 낚싯터 이름을 입력해주세요! ]");
 
 		const roomInfo = FishUtils.FISH_DATABASE.lastData.rooms.find((e) => e.name === roomName);

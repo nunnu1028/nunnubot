@@ -8,13 +8,14 @@ import {
 	FishChangeRodCommand,
 	FishChangeTagCommand,
 	FishCommand,
-	FishMoveCommand,
+	FishChangeRoomCommand,
 	FishMyInfoCommand,
 	FishPictorialBookCommand,
 	FishRegisterCommand,
 	FishRodsCommand,
 	FishSellCommand,
-	FishShopCommand
+	FishShopCommand,
+	FishTipsCommand
 } from "game";
 
 const emulatorMode = typeof process !== "undefined" && process.argv.includes("--emulator");
@@ -28,7 +29,7 @@ commandManager.addCommand(new HelpCommand());
 
 commandManager.addCommand(new FishCommand());
 commandManager.addCommand(new FishRegisterCommand());
-commandManager.addCommand(new FishMoveCommand());
+commandManager.addCommand(new FishChangeRoomCommand());
 commandManager.addCommand(new FishBucketCommand());
 commandManager.addCommand(new FishMyInfoCommand());
 commandManager.addCommand(new FishRodsCommand());
@@ -40,6 +41,7 @@ commandManager.addCommand(new FishBaitsCommand());
 commandManager.addCommand(new FishBuyCommand());
 commandManager.addCommand(new FishChangeBaitCommand());
 commandManager.addCommand(new FishChangeTagCommand());
+commandManager.addCommand(new FishTipsCommand());
 
 function onMessage(room: string, message: string, sender: string, isGroupChat: boolean, replier: Replier, imageDB: ImageDB, packageName: string, chatId: string, hashedUserId: string): void {
 	commandManager.execute({ room, message, sender, isGroupChat, replier, imageDB, packageName, chatId, hashedUserId });

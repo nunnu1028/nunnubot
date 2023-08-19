@@ -1,20 +1,20 @@
 import { DatabaseManager, IDatabaseManager } from "core";
 import { Bait, FishData, FishLevel, FishingDB, FishingRoom, FishingUser, FishingUserLevel, Rod } from "./fish-data";
 import { GOOFY_FISH, MACKEREL_FISH, SACABAMBASPIS_FISH, SALMON_FISH, STURGEON_FISH, TRASH_FISH } from "./fishes";
-import { ADMIN_ROD, NOOB_ROD, NORMAL_ROD } from "./rods";
-import { HAN_RIVER_FISHROOM, NORMAL_RIVER_FISHROOM } from "./rooms";
-import { ADMIN_TAG, GANGTAEGONG_TAG } from "./tags";
+import { ADMIN_ROD, NOOB_ROD, NORMAL_ROD, REINFORCED_ROD } from "./rods";
+import { GLOMMA_RIVER_FISHROOM, HAN_RIVER_FISHROOM, NORMAL_RIVER_FISHROOM } from "./rooms";
+import { ADMIN_TAG, FISHING_HUMAN_TAG, GANGTAEGONG_TAG } from "./tags";
 import { DEFAULT_BAIT, EARTHWORM_BAIT } from "./baits";
-import { NOOB_LEVEL, NORMAL_LEVEL } from "./levels";
+import { NOOB_LEVEL, NORMAL_LEVEL, OLDMAN_LEVEL } from "./levels";
 
 export namespace FishUtils {
 	export let FISH_DATABASE: IDatabaseManager<FishingDB> | null = null;
 	export const FISHES = [GOOFY_FISH, TRASH_FISH, MACKEREL_FISH, SACABAMBASPIS_FISH, STURGEON_FISH, SALMON_FISH];
-	export const LEVELS: FishingUserLevel[] = [NORMAL_LEVEL, NOOB_LEVEL];
-	export const RODS = [NORMAL_ROD, ADMIN_ROD, NOOB_ROD];
+	export const LEVELS: FishingUserLevel[] = [NORMAL_LEVEL, NOOB_LEVEL, OLDMAN_LEVEL];
+	export const RODS = [NORMAL_ROD, ADMIN_ROD, NOOB_ROD, REINFORCED_ROD];
 	export const BAITS = [DEFAULT_BAIT, EARTHWORM_BAIT];
-	export const ROOMS = [NORMAL_RIVER_FISHROOM, HAN_RIVER_FISHROOM];
-	export const TAGS = [ADMIN_TAG, GANGTAEGONG_TAG];
+	export const ROOMS = [NORMAL_RIVER_FISHROOM, HAN_RIVER_FISHROOM, GLOMMA_RIVER_FISHROOM];
+	export const TAGS = [ADMIN_TAG, GANGTAEGONG_TAG, FISHING_HUMAN_TAG];
 
 	export function checkMissingData(): void {
 		const MISSING_FISHES = FISHES.filter((fish) => !FISH_DATABASE!.lastData.fishes.find((f) => f.id === fish.id));
@@ -127,8 +127,8 @@ export namespace FishUtils {
 		return Math.floor(length * price) + getRandomNumber(-5, 5);
 	}
 
-	export function getFishExp(length: number, price: number, exp: number, fishExp: number): number {
-		return Math.floor(length * (exp + fishExp)) + getRandomNumber(-5, 5) + Math.floor(price / 4);
+	export function getFishExp(length: number, exp: number, fishExp: number): number {
+		return Math.floor(length * (exp + fishExp)) + getRandomNumber(-5, 5);
 	}
 
 	export function getRandomFish(room: FishingRoom, usingRod: Rod, usingBait: Bait, fishes: FishData[]): FishData {
