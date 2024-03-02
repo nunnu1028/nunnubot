@@ -15,8 +15,11 @@ import {
 	FishRodsCommand,
 	FishSellCommand,
 	FishShopCommand,
-	FishTipsCommand
+	FishTipsCommand,
+	P2PCreateGameCommand,
+	P2PManager
 } from "game";
+import { P2PGameManager } from "game/p2p/game-manager";
 
 const emulatorMode = typeof process !== "undefined" && process.argv.includes("--emulator");
 
@@ -42,6 +45,9 @@ commandManager.addCommand(new FishBuyCommand());
 commandManager.addCommand(new FishChangeBaitCommand());
 commandManager.addCommand(new FishChangeTagCommand());
 commandManager.addCommand(new FishTipsCommand());
+
+const p2pGameManager = new P2PGameManager();
+commandManager.addCommand(new P2PCreateGameCommand(p2pGameManager));
 
 function onMessage(room: string, message: string, sender: string, isGroupChat: boolean, replier: Replier, imageDB: ImageDB, packageName: string, chatId: string, hashedUserId: string): void {
 	commandManager.execute({ room, message, sender, isGroupChat, replier, imageDB, packageName, chatId, hashedUserId });

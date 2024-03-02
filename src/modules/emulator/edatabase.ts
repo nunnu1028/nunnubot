@@ -3,7 +3,6 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 
 export class EDatabaseManager<T = string> implements IDatabaseManager<T> {
 	private _lastData: T | null = null;
-	private _lastDataString: string | null = null;
 
 	constructor(
 		private readonly _filePath: string,
@@ -27,22 +26,6 @@ export class EDatabaseManager<T = string> implements IDatabaseManager<T> {
 		}
 
 		this._lastData = this._serializer(readFileSync(this._filePath, "utf8"));
-
-		setInterval(() => {
-			if (this._lastDataString !== this._deserializer(this._lastData)) {
-				this.save(this._lastData!);
-
-				this._lastDataString = this._deserializer(this._lastData);
-			}
-		}, 1000);
-
-		setInterval(() => {
-			if (this._lastDataString !== this._deserializer(this._lastData)) {
-				this.save(this._lastData!);
-
-				this._lastDataString = this._deserializer(this._lastData);
-			}
-		}, 1000);
 
 		setInterval(() => {
 			writeFileSync(`${this._filePath}-${Date.now()}`, this._deserializer(this._lastData));

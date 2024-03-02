@@ -28,7 +28,7 @@ export interface EmulationDatabase {
 	channels: EmulationChannel[];
 }
 
-export interface EmulationPacket<T = {}> {
+export interface EmulationPacket<T = object> {
 	method: string;
 	packetId: number;
 	data: T;
@@ -41,7 +41,7 @@ export interface EmulationSession {
 
 export class EmulationServer {
 	private readonly _server: Server;
-	private readonly _packetHandlerMap: Map<string, PacketHandler<any>> = new Map();
+	private readonly _packetHandlerMap: Map<string, PacketHandler<unknown>> = new Map();
 	private readonly _sessions: EmulationSession[] = [];
 	private _database: EmulationDatabase;
 
@@ -67,7 +67,7 @@ export class EmulationServer {
 		return this._server;
 	}
 
-	public get packetHandlerMap(): Map<string, PacketHandler<any>> {
+	public get packetHandlerMap(): Map<string, PacketHandler<unknown>> {
 		return this._packetHandlerMap;
 	}
 
@@ -160,7 +160,7 @@ export class EmulationServer {
 		method: string,
 		data: {
 			status: string;
-			[key: string]: any;
+			[key: string]: unknown;
 		},
 		packetId: number,
 		socket: WebSocket
@@ -179,10 +179,10 @@ export class EmulationServer {
 	}
 
 	public sendData(
-		packet: EmulationPacket<any>,
+		packet: EmulationPacket<unknown>,
 		data: {
 			status: string;
-			[key: string]: any;
+			[key: string]: unknown;
 		},
 		socket: WebSocket,
 		packetId?: number

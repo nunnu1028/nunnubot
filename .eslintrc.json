@@ -18,12 +18,13 @@
 		"@typescript-eslint/no-namespace": "off",
 		"indent": ["off", "tab"],
 		"linebreak-style": ["error", "windows"],
-		"quotes": ["error", "double"],
+		"quotes": ["warn", "double"],
 		"semi": ["error", "always"],
 		"prettier/prettier": [
 			"error",
 			{
-				"endOfLine": "auto"
+				"endOfLine": "auto",
+				"useTabs": false
 			}
 		]
 	},
